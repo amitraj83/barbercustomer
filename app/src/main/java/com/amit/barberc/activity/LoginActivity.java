@@ -1,28 +1,34 @@
 package com.amit.barberc.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
 import com.amit.barberc.util.Global;
 
-public class SplashActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_login);
 
         Global.initUIActivity(this);
 
-        new Handler().postDelayed(this::onNextActivity, 1500);
+        initUIView();
     }
 
-    private void onNextActivity() {
-        Global.showOtherActivity(this, LoginActivity.class, -1);
+    private void initUIView() {
+        //
     }
 
+    public void onClickBtnSend(View view) {
+        //
+    }
+
+    public void onClickBtnLogin(View view) {
+        //
+    }
 }
