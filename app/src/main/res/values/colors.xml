@@ -3,4 +3,16 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+<!--    Light blue : #87c7ff-->
+<!--    Dark blue: #4a98f7-->
+<!--    Blak: #424343-->
+<!--    gray: #adacac-->
+
+    <color name="custom_LightBlue">#87c7ff</color>
+    <color name="custom_DarkBlue">#4a98f7</color>
+    <color name="custom_Black">#424343</color>
+    <color name="custom_Gray">#adacac</color>
+    <color name="custom_White">#ffffff</color>
+
 </resources>
