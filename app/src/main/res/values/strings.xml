@@ -5,6 +5,7 @@
     <string name="login_user_name">User Name</string>
     <string name="login_phone_number">Phone Number</string>
     <string name="login_send">Send</string>
+    <string name="login_resend">Resend</string>
     <string name="login_verification_code">Verification Code</string>
     <string name="login_now">Login Now</string>
 </resources>

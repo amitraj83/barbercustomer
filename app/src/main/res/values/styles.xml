@@ -8,16 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_height="wrap_content"-->
-<!--    android:textColor="@color/custom_Black"-->
-<!--    android:textSize="18dp"-->
-<!--    android:fontFamily="@font/montserrat_medium"-->
-
     <style name="txt">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:letterSpacing">0.35</item>
     </style>
 
     <style name="txt.black">
