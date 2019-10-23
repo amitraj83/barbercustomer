@@ -13,11 +13,14 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.amit.barberc.R;
+import com.amit.barberc.model.CustomerUser;
 
 import java.io.File;
 import java.io.FileWriter;
 
 public class Global {
+
+    static public CustomerUser gUser = new CustomerUser();
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);

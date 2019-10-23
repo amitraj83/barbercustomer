@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Barberc</string>
+    <string name="app_name">Barber Customer</string>
     <string name="login_title">Login</string>
     <string name="login_detail">Please login in here. To start \n using our application.</string>
     <string name="login_user_name">User Name</string>
@@ -8,4 +8,7 @@
     <string name="login_resend">Resend</string>
     <string name="login_verification_code">Verification Code</string>
     <string name="login_now">Login Now</string>
+    <string name="login_faild_verify">Wrong verification code.</string>
+
+
 </resources>

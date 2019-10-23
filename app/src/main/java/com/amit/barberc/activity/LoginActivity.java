@@ -1,6 +1,8 @@
 package com.amit.barberc.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,15 +12,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
 import com.amit.barberc.util.Global;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.dkv.bubblealertlib.AppConstants;
+import com.dkv.bubblealertlib.AppLog;
+import com.dkv.bubblealertlib.BblContentFragment;
+import com.dkv.bubblealertlib.BblDialog;
+import com.dkv.bubblealertlib.BblDialogManager;
+import com.dkv.bubblealertlib.ConstantsIcons;
+import com.dkv.bubblealertlib.IAlertClickedCallBack;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -110,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         if (nameStr.length() == 0) {
             YoYo.with(Techniques.Shake)
                     .duration(700)
-                    .repeat(5)
+                    .repeat(0)
                     .playOn(findViewById(R.id.llt_login_name));
             return;
         }
@@ -119,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         if (phoneStr.length() == 0) {
             YoYo.with(Techniques.Shake)
                     .duration(700)
-                    .repeat(5)
+                    .repeat(0)
                     .playOn(findViewById(R.id.llt_login_phone));
             return;
         }
@@ -138,12 +151,50 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        //
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+                        Global.gUser.id = currentUser.getUid();
+                        Global.gUser.name = txt_name.getText().toString();
+                        Global.gUser.phone = txt_phone.getText().toString();
+
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
+                        mRef.setValue(Global.gUser);
+
+                        Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
                     } else {
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                            //
+                            Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_faild_verify), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
+
+    @Override
+    public void onBackPressed() {
+        // alertdialog for exit the app
+
+        BblDialogManager.showBblDialog(getSupportFragmentManager(),
+                LayoutInflater.from(this), "Do you really close this application?", this.getString(R.string.yes),
+                this.getString(R.string.no), ConstantsIcons.ALERT_ICON_SUCCESS,
+                new IAlertClickedCallBack() {
+                    @Override
+                    public void onOkClicked(String tag) {
+                        moveTaskToBack(true);
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                        System.exit(1);
+                    }
+
+                    @Override
+                    public void onCancelClicked(String tag) {
+                        //
+                    }
+
+                    @Override
+                    public void onExitClicked(String tag) {
+
+                    }
+                }, this, AppConstants.TAG_FEEDBACK_SUCCESS);
+    }
+
 }
