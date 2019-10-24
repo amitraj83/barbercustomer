@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Barber Customer</string>
+    <string name="app_name">Qcut</string>
     <string name="login_title">Login</string>
     <string name="login_detail">Please login in here. To start \n using our application.</string>
     <string name="login_user_name">User Name</string>

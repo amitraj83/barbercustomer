@@ -71,7 +71,7 @@ public class BblContentFragment extends BaseDialogFragment {
         clickHandler = new ClickHandler(this);
 
         txtDialogTitle = (TextView) view.findViewById(R.id.txtDialogTitle);
-        txtDialogTitle.setVisibility(View.GONE);
+//        txtDialogTitle.setVisibility(View.GONE);
         txtContent = (TextView) view.findViewById(R.id.txtContent);
         btnOk = (TextView) view.findViewById(R.id.btnOk);
         btnExit = (TextView) view.findViewById(R.id.btnExit);

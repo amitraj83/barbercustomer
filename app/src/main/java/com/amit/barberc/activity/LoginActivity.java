@@ -1,6 +1,7 @@
 package com.amit.barberc.activity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,9 @@ import com.amit.barberc.util.Global;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.dkv.bubblealertlib.AppConstants;
+import com.dkv.bubblealertlib.AppLog;
+import com.dkv.bubblealertlib.BblContentFragment;
+import com.dkv.bubblealertlib.BblDialog;
 import com.dkv.bubblealertlib.BblDialogManager;
 import com.dkv.bubblealertlib.ConstantsIcons;
 import com.dkv.bubblealertlib.IAlertClickedCallBack;
@@ -133,20 +137,20 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Global.hideKeyboard(this);
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+856"+ phoneStr,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                mCallbacks);
-
+//        Global.hideKeyboard(this);
 //        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-//                "+353"+ phoneStr,        // Phone number to verify
+//                "+856"+ phoneStr,        // Phone number to verify
 //                60,                 // Timeout duration
 //                TimeUnit.SECONDS,   // Unit of timeout
 //                this,               // Activity (for callback binding)
 //                mCallbacks);
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                "+353"+ phoneStr,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                mCallbacks);
     }
 
     public void onClickBtnLogin(View view) {
@@ -177,27 +181,63 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         // alertdialog for exit the app
 
-        BblDialogManager.showBblDialog(getSupportFragmentManager(),
-                LayoutInflater.from(this), "Do you really close this application?", this.getString(R.string.yes),
-                this.getString(R.string.no), ConstantsIcons.ALERT_ICON_SUCCESS,
-                new IAlertClickedCallBack() {
-                    @Override
-                    public void onOkClicked(String tag) {
-                        moveTaskToBack(true);
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                        System.exit(1);
-                    }
+//        BblDialogManager.showBblDialog(getSupportFragmentManager(),
+//                LayoutInflater.from(this), "Do you really close this application?", this.getString(R.string.yes),
+//                this.getString(R.string.no), ConstantsIcons.ALERT_ICON_SUCCESS,
+//                new IAlertClickedCallBack() {
+//                    @Override
+//                    public void onOkClicked(String tag) {
+//                        moveTaskToBack(true);
+//                        android.os.Process.killProcess(android.os.Process.myPid());
+//                        System.exit(1);
+//                    }
+//
+//                    @Override
+//                    public void onCancelClicked(String tag) {
+//                        //
+//                    }
+//
+//                    @Override
+//                    public void onExitClicked(String tag) {
+//
+//                    }
+//                }, this, AppConstants.TAG_FEEDBACK_SUCCESS);
 
-                    @Override
-                    public void onCancelClicked(String tag) {
-                        //
-                    }
+        try {
+            BblContentFragment fragment = BblContentFragment.newInstance(AppConstants.TAG_FEEDBACK_SUCCESS);
+            String content = "Do you really close this application?";
+            if (TextUtils.isEmpty(content)) {
+                content = getString(com.dkv.bubblealertlib.R.string.err_server_error);
+            }
+            fragment.setContent(content, "Yes", "No", null, "Exit");
+            fragment.setClickedCallBack(new IAlertClickedCallBack() {
+                @Override
+                public void onOkClicked(String tag) {
+                    moveTaskToBack(true);
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(1);
+                }
 
-                    @Override
-                    public void onExitClicked(String tag) {
+                @Override
+                public void onCancelClicked(String tag) {
+                    //
+                }
 
-                    }
-                }, this, AppConstants.TAG_FEEDBACK_SUCCESS);
+                @Override
+                public void onExitClicked(String tag) {
+
+                }
+            });
+            BblDialog sampleDialog = new BblDialog();
+            sampleDialog.setContentFragment(fragment
+                    , com.dkv.bubblealertlib.R.layout.layout_bbl_content
+                    , LayoutInflater.from(this), content
+                    , ConstantsIcons.ALERT_ICON_INFO, this);
+            sampleDialog.setDisMissCallBack(null);
+            getSupportFragmentManager().beginTransaction().add(sampleDialog, "Test").commitAllowingStateLoss();
+        } catch (Exception e) {
+            AppLog.logException(AppConstants.TAG_FEEDBACK_SUCCESS, e);
+        }
     }
 
 }

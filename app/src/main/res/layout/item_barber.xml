@@ -42,21 +42,16 @@
                 style="@style/txt.gray.12.light"
                 android:text="Distance : 2.3 Km" />
         </LinearLayout>
-        
-        <LinearLayout
-            android:layout_width="80dp"
-            android:layout_height="30dp">
 
-            <Button
-                android:id="@+id/btn_item_queue"
-                style="@style/txt.black.14.medium"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAllCaps="false"
-                android:text="Queue"
-                android:textColor="@color/custom_White"
-                android:background="@drawable/btn_back_blue"/>
-        </LinearLayout>
+        <Button
+            android:id="@+id/btn_item_queue"
+            style="@style/txt.black.14.medium"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:textAllCaps="false"
+            android:text="Queue"
+            android:textColor="@color/custom_White"
+            android:background="@drawable/btn_back_blue"/>
     </LinearLayout>
 
     <LinearLayout
