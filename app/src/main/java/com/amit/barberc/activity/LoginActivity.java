@@ -15,15 +15,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
 import com.amit.barberc.util.Global;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+
 import com.dkv.bubblealertlib.AppConstants;
 import com.dkv.bubblealertlib.AppLog;
 import com.dkv.bubblealertlib.BblContentFragment;
 import com.dkv.bubblealertlib.BblDialog;
-import com.dkv.bubblealertlib.BblDialogManager;
 import com.dkv.bubblealertlib.ConstantsIcons;
 import com.dkv.bubblealertlib.IAlertClickedCallBack;
+
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -32,6 +34,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import com.hbb20.CountryCodePicker;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -42,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText txt_name, txt_phone, txt_code;
     private LinearLayout llt_code;
     private Button btn_send;
+    private CountryCodePicker ccp;
 
     private FirebaseAuth mAuth;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
@@ -71,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         llt_code.setVisibility(View.GONE);
 
         btn_send = findViewById(R.id.btn_login_send);
+        ccp = findViewById(R.id.ccp_login);
     }
 
     void initFireBaseCallbacks() {
@@ -92,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                 mVerificationId = verificationId;
 
                 llt_code.setVisibility(View.VISIBLE);
+                Global.hideKeyboard(LoginActivity.this);
                 count = 60;
 
                 Timer t = new Timer();
@@ -103,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                                               if (count < 0) {
                                                   t.cancel();
                                                   btn_send.setText(getResources().getString(R.string.login_resend));
+                                                  llt_code.setVisibility(View.GONE);
                                               } else {
                                                   btn_send.setText(String.format("%ds", count));
                                               }
@@ -137,19 +145,11 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-//        Global.hideKeyboard(this);
-//        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-//                "+856"+ phoneStr,        // Phone number to verify
-//                60,                 // Timeout duration
-//                TimeUnit.SECONDS,   // Unit of timeout
-//                this,               // Activity (for callback binding)
-//                mCallbacks);
-
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+353"+ phoneStr,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
+                ccp.getFullNumberWithPlus()+ phoneStr,
+                60,
+                TimeUnit.SECONDS,
+                this,
                 mCallbacks);
     }
 
@@ -179,30 +179,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // alertdialog for exit the app
-
-//        BblDialogManager.showBblDialog(getSupportFragmentManager(),
-//                LayoutInflater.from(this), "Do you really close this application?", this.getString(R.string.yes),
-//                this.getString(R.string.no), ConstantsIcons.ALERT_ICON_SUCCESS,
-//                new IAlertClickedCallBack() {
-//                    @Override
-//                    public void onOkClicked(String tag) {
-//                        moveTaskToBack(true);
-//                        android.os.Process.killProcess(android.os.Process.myPid());
-//                        System.exit(1);
-//                    }
-//
-//                    @Override
-//                    public void onCancelClicked(String tag) {
-//                        //
-//                    }
-//
-//                    @Override
-//                    public void onExitClicked(String tag) {
-//
-//                    }
-//                }, this, AppConstants.TAG_FEEDBACK_SUCCESS);
-
         try {
             BblContentFragment fragment = BblContentFragment.newInstance(AppConstants.TAG_FEEDBACK_SUCCESS);
             String content = "Do you really close this application?";
