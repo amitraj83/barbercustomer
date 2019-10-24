@@ -4,14 +4,27 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.ListView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.amit.barberc.R;
+import com.amit.barberc.adapter.BarberListAdadper;
+import com.amit.barberc.listener.OnQueueListener;
+import com.amit.barberc.model.BarberUser;
 
-public class BarberListFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+public class BarberListFragment extends Fragment implements OnQueueListener {
+
+    private ListView lst_barber;
+    private ImageView img_up;
+
+    private BarberListAdadper listAdadper;
+    private List<BarberUser> barberUsers = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -22,9 +35,21 @@ public class BarberListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        int position = FragmentPagerItem.getPosition(getArguments());
-//        TextView title = (TextView) view.findViewById(R.id.item_title);
-//        title.setText(String.valueOf(position));
+
+        lst_barber = view.findViewById(R.id.lst_frg_list);
+        listAdadper = new BarberListAdadper(getContext(), barberUsers);
+        listAdadper.setOnQueueListener(this);
+        lst_barber.setAdapter(listAdadper);
+
+        img_up = view.findViewById(R.id.img_frg_list);
+        img_up.setOnClickListener(v -> {
+            lst_barber.smoothScrollToPosition(0);
+        });
+
     }
 
+    @Override
+    public void OnQueueClickListener(BarberUser barber) {
+        //
+    }
 }

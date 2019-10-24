@@ -1,7 +1,6 @@
 package com.amit.barberc.activity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,9 +17,6 @@ import com.amit.barberc.util.Global;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.dkv.bubblealertlib.AppConstants;
-import com.dkv.bubblealertlib.AppLog;
-import com.dkv.bubblealertlib.BblContentFragment;
-import com.dkv.bubblealertlib.BblDialog;
 import com.dkv.bubblealertlib.BblDialogManager;
 import com.dkv.bubblealertlib.ConstantsIcons;
 import com.dkv.bubblealertlib.IAlertClickedCallBack;
@@ -144,6 +140,13 @@ public class LoginActivity extends AppCompatActivity {
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
                 mCallbacks);
+
+//        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+//                "+353"+ phoneStr,        // Phone number to verify
+//                60,                 // Timeout duration
+//                TimeUnit.SECONDS,   // Unit of timeout
+//                this,               // Activity (for callback binding)
+//                mCallbacks);
     }
 
     public void onClickBtnLogin(View view) {

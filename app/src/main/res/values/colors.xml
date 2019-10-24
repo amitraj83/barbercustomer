@@ -14,5 +14,6 @@
     <color name="custom_Black">#424343</color>
     <color name="custom_Gray">#adacac</color>
     <color name="custom_White">#ffffff</color>
+    <color name="custom_WhiteAlpha">#c0ffffff</color>
 
 </resources>

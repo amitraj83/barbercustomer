@@ -12,7 +12,16 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".activity.SplashActivity"
+<!--        <activity android:name=".activity.SplashActivity"-->
+<!--            android:screenOrientation="portrait">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
+
+        <activity android:name=".MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +33,10 @@
         <activity android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".MainActivity"
+<!--        <activity android:name=".MainActivity"-->
+<!--            android:screenOrientation="portrait"/>-->
+
+        <activity android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"/>
 
     </application>
