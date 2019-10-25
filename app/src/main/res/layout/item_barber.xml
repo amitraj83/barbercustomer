@@ -28,19 +28,48 @@
             android:orientation="vertical">
 
             <TextView
+
                 android:id="@+id/lbl_item_name"
                 style="@style/txt.black.14.medium"
                 android:text="Your Barber" />
 
-            <TextView
-                android:id="@+id/lbl_item_time"
-                style="@style/txt.gray.12.light"
-                android:text="Waiting Time : 2 hr" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/lbl_item_distence"
-                style="@style/txt.gray.12.light"
-                android:text="Distance : 2.3 Km" />
+                <TextView
+                    android:id="@+id/lbl_item_during"
+                    style="@style/txt.gray.12.medium"
+                    android:text="Time : 08:00 ~ 18:00" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_waiting"/>
+
+                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/lbl_item_time"
+                    style="@style/txt.gray.12.medium"
+                    android:text="2 hr" />
+
+                <ImageView
+                    android:layout_marginLeft="30dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_address"/>
+
+                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/lbl_item_distence"
+                    style="@style/txt.gray.12.medium"
+                    android:text="2.3 Km" />
+            </LinearLayout>
         </LinearLayout>
 
         <Button

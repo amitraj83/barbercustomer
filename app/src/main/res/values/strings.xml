@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Qcut</string>
+
+    <string name="login_server_connect">Connecting in Server...</string>
+
     <string name="login_title">Login</string>
     <string name="login_detail">Please login in here. To start \n using our application.</string>
     <string name="login_user_name">User Name</string>
@@ -9,6 +12,7 @@
     <string name="login_verification_code">Verification Code</string>
     <string name="login_now">Login Now</string>
     <string name="login_faild_verify">Wrong verification code.</string>
+    <string name="login_send_code">Send Code</string>
 
 
 </resources>

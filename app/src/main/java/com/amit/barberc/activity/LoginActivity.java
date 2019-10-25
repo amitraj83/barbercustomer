@@ -1,5 +1,6 @@
 package com.amit.barberc.activity;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +28,8 @@ import com.dkv.bubblealertlib.BblDialog;
 import com.dkv.bubblealertlib.ConstantsIcons;
 import com.dkv.bubblealertlib.IAlertClickedCallBack;
 
+import com.fevziomurtekin.customprogress.Dialog;
+import com.fevziomurtekin.customprogress.Type;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -44,15 +48,18 @@ import java.util.concurrent.TimeUnit;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText txt_name, txt_phone, txt_code;
+    private TextView lbl_count;
     private LinearLayout llt_code;
-    private Button btn_send;
+    private Button btn_login;
     private CountryCodePicker ccp;
+    private Dialog progressbar;
 
     private FirebaseAuth mAuth;
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
     String mVerificationId;
 
     private int count = 0;
+    private boolean isVerify = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,58 +79,74 @@ public class LoginActivity extends AppCompatActivity {
         txt_phone = findViewById(R.id.txt_login_phone);
         txt_code = findViewById(R.id.txt_login_code);
 
+        lbl_count = findViewById(R.id.lbl_login_count);
+
         llt_code = findViewById(R.id.llt_login_code);
         llt_code.setVisibility(View.GONE);
 
-        btn_send = findViewById(R.id.btn_login_send);
+        btn_login = findViewById(R.id.btn_login);
+
         ccp = findViewById(R.id.ccp_login);
+
+        progressbar = findViewById(R.id.progress);
+        progressbar.settype(Type.RIPPLE);
     }
 
     void initFireBaseCallbacks() {
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
-                Toast.makeText(LoginActivity.this, "Verification Complete", Toast.LENGTH_SHORT).show();
+                progressbar.gone();
             }
 
             @Override
             public void onVerificationFailed(@NonNull FirebaseException e) {
+                progressbar.gone();
                 Toast.makeText(LoginActivity.this, "Verification Failed", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCodeSent(@NonNull String verificationId,
                                    @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                progressbar.gone();
+
                 Toast.makeText(LoginActivity.this, "Code Sent", Toast.LENGTH_SHORT).show();
                 mVerificationId = verificationId;
 
                 llt_code.setVisibility(View.VISIBLE);
-                Global.hideKeyboard(LoginActivity.this);
+                btn_login.setText(getResources().getString(R.string.login_now));
+
+                isVerify = false;
+
                 count = 60;
 
                 Timer t = new Timer();
-                t.scheduleAtFixedRate(new TimerTask() {
-                                          @Override
-                                          public void run() {
-                                              //Called each time when 1000 milliseconds (1 second) (the period parameter)
-                                              count = count - 1;
-                                              if (count < 0) {
-                                                  t.cancel();
-                                                  btn_send.setText(getResources().getString(R.string.login_resend));
-                                                  llt_code.setVisibility(View.GONE);
-                                              } else {
-                                                  btn_send.setText(String.format("%ds", count));
-                                              }
-                                          }
-                                      },
+                t.scheduleAtFixedRate(new TimerTask()
+                        {
+                            @Override
+                            public void run() {
+                                //Called each time when 1000 milliseconds (1 second) (the period parameter)
+                                count = count - 1;
+                                if (count < 0) {
+                                    t.cancel();
+                                    btn_login.setText(getResources().getString(R.string.login_resend));
+                                    runOnUiThread(() -> llt_code.setVisibility(View.GONE));
+
+                                    isVerify = true;
+                                } else {
+                                    runOnUiThread(() -> lbl_count.setText(String.format("%ds", count)));
+                                }
+                            }
+                        },
                         0,
                         1000);
             }
         };
     }
 
-    public void onClickBtnSend(View view) {
+    private void onClickBtnVerify() {
         if (count > 0) {
+            progressbar.gone();
             return;
         }
 
@@ -133,6 +156,7 @@ public class LoginActivity extends AppCompatActivity {
                     .duration(700)
                     .repeat(0)
                     .playOn(findViewById(R.id.llt_login_name));
+            progressbar.gone();
             return;
         }
 
@@ -142,19 +166,47 @@ public class LoginActivity extends AppCompatActivity {
                     .duration(700)
                     .repeat(0)
                     .playOn(findViewById(R.id.llt_login_phone));
+            progressbar.gone();
             return;
         }
 
+        Global.hideKeyboard(this);
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                ccp.getFullNumberWithPlus()+ phoneStr,
-                60,
+                ccp.getFullNumberWithPlus() + phoneStr,
+                30,
                 TimeUnit.SECONDS,
                 this,
                 mCallbacks);
     }
 
     public void onClickBtnLogin(View view) {
-        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, txt_code.getText().toString());
+//        if (true) {
+//            Global.gUser.id = "xarLSUpYEUUVavCXYHUwZdnK2Am1";
+//            Global.gUser.name = "Black Gold";
+//            Global.gUser.phone = "2096227257";
+//
+//            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+//            return;
+//        }
+
+        progressbar.show();
+
+        if (isVerify) {
+            onClickBtnVerify();
+            return;
+        }
+
+        String codeStr = txt_code.getText().toString();
+        if (codeStr.length() == 0) {
+            progressbar.gone();
+            YoYo.with(Techniques.Shake)
+                    .duration(700)
+                    .repeat(0)
+                    .playOn(findViewById(R.id.llt_login_code));
+            return;
+        }
+
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, codeStr);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -174,6 +226,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_faild_verify), Toast.LENGTH_SHORT).show();
                         }
                     }
+                    progressbar.gone();
                 });
     }
 

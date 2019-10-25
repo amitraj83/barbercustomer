@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,164 +11,174 @@
     tools:context=".activity.LoginActivity">
 
     <LinearLayout
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/logo" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal">
-
-            <TextView
-                style="@style/txt.black.18.medium"
-                android:text="@string/login_title" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-
-            <TextView
-                style="@style/txt.gray.14.light"
-                android:text="@string/login_detail"
-                android:textAlignment="center"/>
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:padding="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/llt_back_shadow">
-
-        <LinearLayout
-            android:id="@+id/llt_login_name"
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:gravity="center_vertical"
-            android:background="@drawable/llt_back_shadow">
-
-            <EditText
-                android:id="@+id/txt_login_name"
-                android:layout_marginStart="8dp"
-                style="@style/txt.black.12.light"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="textCapSentences"
-                android:hint="@string/login_user_name"
-                android:textColorHint="@color/custom_Gray"
-                android:background="@null"/>
 
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_username"/>
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/logo" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    style="@style/txt.black.18.medium"
+                    android:text="@string/login_title" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    style="@style/txt.gray.14.light"
+                    android:text="@string/login_detail"
+                    android:textAlignment="center"/>
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llt_login_phone"
             android:layout_marginTop="15dp"
+            android:padding="20dp"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@drawable/llt_back_shadow">
 
-            <com.hbb20.CountryCodePicker
-                android:id="@+id/ccp_login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:ccp_textSize="14dp"
-                app:ccp_showPhoneCode="false"
-                app:ccp_showNameCode="false"
-                app:ccp_defaultPhoneCode="353"/>
+            <LinearLayout
+                android:id="@+id/llt_login_name"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/llt_back_shadow">
 
-            <EditText
-                android:id="@+id/txt_login_phone"
-                android:layout_marginStart="8dp"
-                style="@style/txt.black.12.light"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="phone"
-                android:hint="@string/login_phone_number"
-                android:textColorHint="@color/custom_Gray"
-                android:background="@null"/>
+                <EditText
+                    android:id="@+id/txt_login_name"
+                    android:layout_marginStart="8dp"
+                    style="@style/txt.black.12.light"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:inputType="textCapSentences"
+                    android:hint="@string/login_user_name"
+                    android:textColorHint="@color/custom_Gray"
+                    android:background="@null"/>
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_username"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llt_login_phone"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/llt_back_shadow">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccp_textSize="14dp"
+                    app:ccpDialog_textColor="@color/custom_White"
+                    app:ccp_showPhoneCode="false"
+                    app:ccp_showNameCode="false"
+                    app:ccp_defaultPhoneCode="353"/>
+
+                <EditText
+                    android:id="@+id/txt_login_phone"
+                    style="@style/txt.black.12.light"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:inputType="phone"
+                    android:hint="@string/login_phone_number"
+                    android:textColorHint="@color/custom_Gray"
+                    android:background="@null"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llt_login_code"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/llt_back_shadow">
+
+                <EditText
+                    android:id="@+id/txt_login_code"
+                    android:layout_marginStart="8dp"
+                    style="@style/txt.black.12.light"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:hint="@string/login_verification_code"
+                    android:textColorHint="@color/custom_Gray"
+                    android:background="@null"/>
+
+                <TextView
+                    android:id="@+id/lbl_login_count"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="10dp"
+                    style="@style/txt.black.14.medium"
+                    android:textColor="@color/custom_DarkBlue"
+                    android:text="60 s"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp" >
 
             <Button
-                android:id="@+id/btn_login_send"
-                style="@style/txt.gray.12.medium"
-                android:layout_width="60dp"
-                android:text="@string/login_send"
+                android:id="@+id/btn_login"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                style="@style/txt.black.14.bold"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textAllCaps="false"
-                android:textColor="@color/custom_DarkBlue"
-                android:background="@android:color/transparent"
-                android:onClick="onClickBtnSend"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llt_login_code"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:gravity="center_vertical"
-            android:background="@drawable/llt_back_shadow">
-
-            <EditText
-                android:id="@+id/txt_login_code"
-                android:layout_marginStart="8dp"
-                style="@style/txt.black.12.light"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:hint="@string/login_verification_code"
-                android:textColorHint="@color/custom_Gray"
-                android:background="@null"/>
-
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_lock"/>
+                android:text="@string/login_send_code"
+                android:textColor="@color/custom_White"
+                android:background="@drawable/btn_back_blue"
+                android:onClick="onClickBtnLogin"/>
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp" >
+    <com.fevziomurtekin.customprogress.Dialog
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/progress"
+        android:visibility="gone"/>
 
-        <Button
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            style="@style/txt.black.14.bold"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAllCaps="false"
-            android:text="@string/login_now"
-            android:textColor="@color/custom_White"
-            android:background="@drawable/btn_back_blue"
-            android:onClick="onClickBtnLogin"/>
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

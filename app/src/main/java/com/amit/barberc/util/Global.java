@@ -2,10 +2,13 @@ package com.amit.barberc.util;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -14,9 +17,11 @@ import androidx.core.content.ContextCompat;
 
 import com.amit.barberc.R;
 import com.amit.barberc.model.CustomerUser;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DecimalFormat;
 
 public class Global {
 
@@ -51,75 +56,55 @@ public class Global {
         activity.finish();
     }
 
-    public static void writeToFile(String data, String filename, Context context) {
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), context.getString(R.string.app_name));
-        if (!file.exists()) {
-            if (!file.mkdirs()) {
-                return;
-            }
-        }
-        if(!file.exists()){
-            file.mkdir();
-        }
-
-        try{
-            File gpxfile = new File(file, filename + ".txt");
-            FileWriter writer = new FileWriter(gpxfile);
-            writer.append(data);
-            writer.flush();
-            writer.close();
-
-            Toast.makeText(context, gpxfile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public static boolean isCheckSpelling (String str) {
-        if (str.length() == 0) {
-            return false;
-        }
-        String str_first_able = "abcdefghijklmnopqrstuvwxyz";
-        String str_first = Character.toString(str.charAt(0));
-        if (!str_first_able.contains(str_first)) {
-            return false;
-        }
-        String str_able = "abcdefghijklmnopqrstuvwxyz_1234567890";
-        for (int i = 1; i < str.length(); i++) {
-            String letter = Character.toString(str.charAt(i));
-            if (!str_able.contains(letter)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static void initUIActivity (Activity activity) {
-
         // Change Status Bar Color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             activity.getWindow().setStatusBarColor(activity.getColor(R.color.custom_White));
         } else {
             activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.custom_White));
         }
+    }
 
-        // Hide Navigation Bar (Full Screen)
-//        final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-//
-//        activity.getWindow().getDecorView().setSystemUiVisibility(flags);
-//        final View decorView = activity.getWindow().getDecorView();
-//        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-//            @Override
-//            public void onSystemUiVisibilityChange(int visibility) {
-//                if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-//                    decorView.setSystemUiVisibility(flags);
-//                }
-//            }
-//        });
+    static public ProgressDialog onShowProgressDialog(final Context mActivity, final String message, boolean isCancelable) {
+        ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(mActivity);
+        progressDialog.show();
+        progressDialog.setCancelable(isCancelable);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage(message);
+        return progressDialog;
+    }
+
+    static public final void onDismissProgressDialog(ProgressDialog progressDialog) {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    static public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return Radius * c;
     }
 
 }
