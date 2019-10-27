@@ -79,7 +79,10 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
             isLocation = true;
-
+//            Global.gLat = location.getLatitude() - 20;
+//            Global.gLot = -location.getLongitude() - 20;
+            Global.gLat = 102.634751;
+            Global.gLan = 17.956487;
         }
 
         @Override

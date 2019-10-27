@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "959071555094-vlu4qro0misqe8lig3mqiuiifsego9nq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amit.barberc",
+            "certificate_hash": "7ea985cb649c2e3f8f8682fe6811db9d2edd51b9"
+          }
+        },
+        {
+          "client_id": "959071555094-c2g8cqjd9uimsvacl5l9qt0bm5890toc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amit.barberc",
+            "certificate_hash": "9c09ecc00148f6cfde3ad8726416c3904249742a"
+          }
+        },
+        {
           "client_id": "959071555094-va90chrto560mr295bsor4m1l0scevfg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -51,6 +67,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "959071555094-j18t8d88uelts11u8c573kdoj3qu0qrn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amit.barberq",
+            "certificate_hash": "f62e73f5b35ca7b78f8097a8a022e36040cd5aba"
+          }
+        },
         {
           "client_id": "959071555094-f9a79r4i9qp75n2ksjakbkp7oka2p6q8.apps.googleusercontent.com",
           "client_type": 3

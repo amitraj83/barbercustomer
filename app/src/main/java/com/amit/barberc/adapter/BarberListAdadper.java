@@ -22,6 +22,7 @@ import com.amit.barberc.R;
 import com.amit.barberc.listener.OnQueueListener;
 import com.amit.barberc.model.BarberUser;
 import com.amit.barberc.model.CustomerUser;
+import com.amit.barberc.model.DistanceModel;
 import com.amit.barberc.util.Global;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,12 +40,14 @@ public class BarberListAdadper extends BaseAdapter {
 
     private Context mContext;
     private List<BarberUser> mBarbers;
+    private List<DistanceModel> mDistences;
 
     private OnQueueListener mListener;
 
-    public BarberListAdadper(Context context, List<BarberUser> barbers){
+    public BarberListAdadper(Context context, List<BarberUser> barbers, List<DistanceModel> distances){
         mContext = context;
         mBarbers = barbers;
+        mDistences = distances;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class BarberListAdadper extends BaseAdapter {
         }
 
         BarberUser barber = mBarbers.get(position);
+        DistanceModel distance = mDistences.get(position);
 
         convertView = LayoutInflater.from(mContext).inflate(R.layout.item_barber, null);
         convertView.setOnClickListener(v -> mListener.OnClickBarber(barber));
@@ -103,6 +107,10 @@ public class BarberListAdadper extends BaseAdapter {
 
         TextView name = convertView.findViewById(R.id.lbl_item_name);
         name.setText(barber.name);
+
+        TextView lbl_distance = convertView.findViewById(R.id.lbl_item_distence);
+        String str_distance = String.format("%.1f Km", distance.distance);
+        lbl_distance.setText(str_distance);
 
         TextView time = convertView.findViewById(R.id.lbl_item_time);
         int restTime = 0;

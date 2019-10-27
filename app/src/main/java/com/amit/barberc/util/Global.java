@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import com.amit.barberc.R;
 import com.amit.barberc.model.BarberUser;
 import com.amit.barberc.model.CustomerUser;
+import com.amit.barberc.model.DistanceModel;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.text.DecimalFormat;
@@ -29,8 +30,10 @@ public class Global {
     static public CustomerUser gUser = new CustomerUser();
     static public BarberUser gBarber = new BarberUser();
     static public List<BarberUser> gBarberUsers = new ArrayList<>();
+    static public List<DistanceModel> gBarberDistences = new ArrayList<>();
 
     static public boolean gIsQueue = false;
+    static public double gLat, gLan;
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -70,7 +73,7 @@ public class Global {
         }
     }
 
-    static public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+    static public double onCalculationByDistance(LatLng StartP, LatLng EndP) {
         int Radius = 6371;// radius of earth in Km
 
         double lat1 = StartP.latitude;

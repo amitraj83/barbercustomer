@@ -18,6 +18,7 @@ import com.amit.barberc.R;
 import com.amit.barberc.adapter.BarberListAdadper;
 import com.amit.barberc.listener.OnQueueListener;
 import com.amit.barberc.model.BarberUser;
+import com.amit.barberc.model.DistanceModel;
 import com.amit.barberc.util.Global;
 import com.dkv.bubblealertlib.AppConstants;
 import com.dkv.bubblealertlib.AppLog;
@@ -27,6 +28,7 @@ import com.dkv.bubblealertlib.ConstantsIcons;
 import com.dkv.bubblealertlib.IAlertClickedCallBack;
 import com.fevziomurtekin.customprogress.Dialog;
 import com.fevziomurtekin.customprogress.Type;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +36,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -46,6 +51,7 @@ public class BarberListFragment extends Fragment implements OnQueueListener {
     private Dialog progressbar;
 
     private BarberListAdadper listAdadper;
+    private List<BarberUser> mBarbers = new ArrayList<>();
 
     private String queueDate;
     private String queueID;
@@ -63,7 +69,7 @@ public class BarberListFragment extends Fragment implements OnQueueListener {
         MainActivity.listFragment = this;
 
         lst_barber = view.findViewById(R.id.lst_frg_list);
-        listAdadper = new BarberListAdadper(getContext(), Global.gBarberUsers);
+        listAdadper = new BarberListAdadper(getContext(), Global.gBarberUsers, Global.gBarberDistences);
         listAdadper.setOnQueueListener(this);
         lst_barber.setAdapter(listAdadper);
 
@@ -110,16 +116,26 @@ public class BarberListFragment extends Fragment implements OnQueueListener {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 progressbar.gone();
 
-                Global.gBarberUsers.clear();
+                Global.gBarberDistences.clear();
+                mBarbers.clear();
+
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     BarberUser barberUser = postSnapshot.getValue(BarberUser.class);
-                    Global.gBarberUsers.add(barberUser);
+                    mBarbers.add(barberUser);
+
+                    DistanceModel model = new DistanceModel();
+                    model.barberID = barberUser.id;
+                    LatLng p1 = new LatLng(Global.gLan, Global.gLat);
+                    LatLng p2 = new LatLng(Double.parseDouble(barberUser.langitude), Double.parseDouble(barberUser.latitude));
+                    model.distance = Global.onCalculationByDistance(p1, p2);
+                    Global.gBarberDistences.add(model);
                 }
 
-                onResetBarberList();
-
-                if (Global.gBarberUsers.size() > 0 && Global.gBarber.id.equals("")) {
-                    Global.gBarber = Global.gBarberUsers.get(0);
+                if (mBarbers.size() > 0) {
+                    Collections.sort(Global.gBarberDistences, (model1, model2) ->
+                            (String.valueOf(model1.distance)).compareTo(String.valueOf(model2.distance))
+                    );
+                    onResetBarberList();
                 }
             }
 
@@ -131,16 +147,33 @@ public class BarberListFragment extends Fragment implements OnQueueListener {
     }
 
     private void onResetBarberList() {
+        Global.gBarberUsers.clear();
+        for (DistanceModel mode: Global.gBarberDistences) {
+            String barberID = mode.barberID;
+            for (BarberUser barberUser: mBarbers) {
+                if (barberID.equals(barberUser.id)) {
+                    Global.gBarberUsers.add(barberUser);
+                    break;
+                }
+            }
+        }
         if (Global.gIsQueue) {
             for (int i = 0; i < Global.gBarberUsers.size(); i++) {
                 BarberUser barberUser = Global.gBarberUsers.get(i);
+                DistanceModel distanceModel = Global.gBarberDistences.get(i);
                 if (barberUser.id.equals(queueID)) {
                     Global.gBarberUsers.remove(barberUser);
                     Global.gBarberUsers.add(0, barberUser);
+                    Global.gBarberDistences.remove(distanceModel);
+                    Global.gBarberDistences.add(0, distanceModel);
                 }
             }
         }
         listAdadper.notifyDataSetChanged();
+
+        if (Global.gBarberUsers.size() > 0 && Global.gBarber.id.equals("")) {
+            Global.gBarber = Global.gBarberUsers.get(0);
+        }
     }
 
     @Override
