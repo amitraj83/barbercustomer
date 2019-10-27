@@ -14,5 +14,16 @@
     <string name="login_faild_verify">Wrong verification code.</string>
     <string name="login_send_code">Send Code</string>
 
+    <string name="item_cutting">Cutting...</string>
+    <string name="item_queue">Queued</string>
+
+    <string name="detail_cutting">You are cutting now.</string>
+    <string name="detail_already_queue">You already queued to another barber.</string>
+    <string name="detail_waiting">You are %dth in the queue and you waiting time is:</string>
+    <string name="detail_already_barber">The barber is alrady ready.</string>
+    <string name="item_ready">Ready</string>
+    <string name="detail_waiting_queue">Already queued. You are %dth in the queue and you waiting time is</string>
+    <string name="detail_set_queue">Please queue to this barber.</string>
+
 
 </resources>

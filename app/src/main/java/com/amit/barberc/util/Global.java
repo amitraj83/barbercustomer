@@ -5,27 +5,34 @@ import android.app.ActivityOptions;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Build;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
 import com.amit.barberc.R;
+import com.amit.barberc.model.BarberUser;
 import com.amit.barberc.model.CustomerUser;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Global {
+    static final public String AppTag = "com.amit.barberc";
+
+    static final public String KeyIsQueue = "isqueue";
+    static final public String KeyQueueDate = "queuedate";
+    static final public String KeyQueueID = "queueid";
 
     static public CustomerUser gUser = new CustomerUser();
+    static public BarberUser gBarber = new BarberUser();
+    static public List<BarberUser> gBarberUsers = new ArrayList<>();
+
+    static public boolean gIsQueue = false;
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -62,22 +69,6 @@ public class Global {
             activity.getWindow().setStatusBarColor(activity.getColor(R.color.custom_White));
         } else {
             activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.custom_White));
-        }
-    }
-
-    static public ProgressDialog onShowProgressDialog(final Context mActivity, final String message, boolean isCancelable) {
-        ProgressDialog progressDialog;
-        progressDialog = new ProgressDialog(mActivity);
-        progressDialog.show();
-        progressDialog.setCancelable(isCancelable);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage(message);
-        return progressDialog;
-    }
-
-    static public final void onDismissProgressDialog(ProgressDialog progressDialog) {
-        if (progressDialog != null && progressDialog.isShowing()) {
-            progressDialog.dismiss();
         }
     }
 

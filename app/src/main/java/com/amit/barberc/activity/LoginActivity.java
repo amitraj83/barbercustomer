@@ -1,6 +1,12 @@
 package com.amit.barberc.activity;
 
-import android.app.ProgressDialog;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -13,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
@@ -30,6 +38,7 @@ import com.dkv.bubblealertlib.IAlertClickedCallBack;
 
 import com.fevziomurtekin.customprogress.Dialog;
 import com.fevziomurtekin.customprogress.Type;
+
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -38,7 +47,6 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import com.hbb20.CountryCodePicker;
 
 import java.util.Timer;
@@ -60,6 +68,35 @@ public class LoginActivity extends AppCompatActivity {
 
     private int count = 0;
     private boolean isVerify = true;
+    private boolean isLocation = false;
+
+    private LocationManager mLocationManager;
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+            if (isLocation) {
+                return;
+            }
+            isLocation = true;
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            //
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            //
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            //
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +105,56 @@ public class LoginActivity extends AppCompatActivity {
 
         Global.initUIActivity(this);
 
+        onCheckAllPermission();
+    }
+
+    private void onCheckAllPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 100);
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+            return;
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 100);
+            return;
+        }
+
         mAuth = FirebaseAuth.getInstance();
 
         initUIView();
         initFireBaseCallbacks();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onCheckAllPermission();
+            } else {
+                Toast.makeText(this, "All permitions are not setted.", Toast.LENGTH_LONG).show();
+
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     private void initUIView() {
+        isLocation = false;
+
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0
+                , 0, mLocationListener);
+
         txt_name = findViewById(R.id.txt_login_name);
         txt_phone = findViewById(R.id.txt_login_phone);
         txt_code = findViewById(R.id.txt_login_code);
@@ -181,9 +261,52 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickBtnLogin(View view) {
 //        if (true) {
-//            Global.gUser.id = "xarLSUpYEUUVavCXYHUwZdnK2Am1";
-//            Global.gUser.name = "Black Gold";
-//            Global.gUser.phone = "2096227257";
+//            Global.gUser.id = "SpGo6vRCLAdqir7aQoQIVbc6uFc2";
+//            Global.gUser.name = "Noma";
+//            Global.gUser.phone = "2055592450";
+//
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
+//            mRef.setValue(Global.gUser);
+//
+//            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+//            return;
+//        }
+
+        if (true) {
+            Global.gUser.id = "xarLSUpYEUUVavCXYHUwZdnK2Am1";
+            Global.gUser.name = "Black Gold";
+            Global.gUser.phone = "2096227257";
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
+            mRef.setValue(Global.gUser);
+
+            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+            return;
+        }
+
+//        if (true) {
+//            Global.gUser.id = "SdpU64FW3hSbJvSnjV7Ra0Vstyu1";
+//            Global.gUser.name = "Sayavong";
+//            Global.gUser.phone = "2091659709";
+//
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
+//            mRef.setValue(Global.gUser);
+//
+//            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+//            return;
+//        }
+
+//        if (true) {
+//            Global.gUser.id = "vrFfGuysKUOh6ASm4yMALXbyjap2";
+//            Global.gUser.name = "Berk";
+//            Global.gUser.phone = "2058076889";
+//
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
+//            mRef.setValue(Global.gUser);
 //
 //            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
 //            return;

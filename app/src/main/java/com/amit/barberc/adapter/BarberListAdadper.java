@@ -1,6 +1,7 @@
 package com.amit.barberc.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
@@ -12,17 +13,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
 import com.amit.barberc.listener.OnQueueListener;
 import com.amit.barberc.model.BarberUser;
+import com.amit.barberc.model.CustomerUser;
+import com.amit.barberc.util.Global;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.util.Calendar;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class BarberListAdadper extends BaseAdapter {
 
@@ -38,7 +49,7 @@ public class BarberListAdadper extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mBarbers.size();
+        return mBarbers.size() + 1;
     }
 
     @Override
@@ -53,13 +64,15 @@ public class BarberListAdadper extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (position == mBarbers.size() - 1) {
+        if (position == mBarbers.size()) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_empty, null);
             return convertView;
         }
-        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_barber, null);
 
         BarberUser barber = mBarbers.get(position);
+
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_barber, null);
+        convertView.setOnClickListener(v -> mListener.OnClickBarber(barber));
 
         ImageView img_good = convertView.findViewById(R.id.img_item_avatar);
         if (barber.avatarImgUrl.length() == 0) {
@@ -73,7 +86,7 @@ public class BarberListAdadper extends BaseAdapter {
                     public void onSuccess() {
                         Bitmap src = ((BitmapDrawable)img_good.getDrawable()).getBitmap();
                         RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(mContext.getResources(), src);
-                        dr.setCornerRadius(50);
+                        dr.setCornerRadius(100);
                         img_good.setImageDrawable(dr);
                     }
 
@@ -85,7 +98,7 @@ public class BarberListAdadper extends BaseAdapter {
 
         Button queue = convertView.findViewById(R.id.btn_item_queue);
         queue.setOnClickListener(v -> {
-            mListener.OnQueueClickListener(new BarberUser());
+            mListener.OnClickQueue(barber);
         });
 
         TextView name = convertView.findViewById(R.id.lbl_item_name);
@@ -110,28 +123,69 @@ public class BarberListAdadper extends BaseAdapter {
             }
 
         } else {
-            showTime = " Ready ";
+            showTime = mContext.getResources().getString(R.string.item_ready);
         }
         time.setText(showTime);
 
-        TextView distance = convertView.findViewById(R.id.lbl_item_distence);
-
-        TextView during = convertView.findViewById(R.id.lbl_item_during);
-        Calendar calendar = Calendar.getInstance();
-        int indexofWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        BarberUser.WorkTime workTime = barber.workTimeList.get((indexofWeek + 5) % 7);
-        String duringStr = "";
-        if (workTime.fromtime.length() > 0) {
-            duringStr = String.format("During : %s ~ %s", workTime.fromtime, workTime.totime);
-        } else {
-            duringStr = "During: Today is rest.";
-            queue.setVisibility(View.GONE);
-        }
-        during.setText(duringStr);
-
         LinearLayout spec = convertView.findViewById(R.id.llt_item_spec);
-        if (position == mBarbers.size() - 2) {
+        if (position == mBarbers.size() - 1) {
             spec.setVisibility(View.GONE);
+        }
+
+        if (Global.gIsQueue) {
+            queue.setVisibility(View.GONE);
+            if (position == 0) {
+                queue.setVisibility(View.VISIBLE);
+                queue.setEnabled(false);
+                queue.setBackground(mContext.getDrawable(R.drawable.btn_back_orange));
+                queue.setText("Queued");
+
+                convertView.setBackgroundColor(mContext.getColor(R.color.custom_WhiteBlack));
+
+                SharedPreferences prefs = MainActivity.mActivity.getSharedPreferences(Global.AppTag, MODE_PRIVATE);
+                String queueID = prefs.getString(Global.KeyQueueID, "");
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference mRef = database.getReference().child("Queues").child(queueID);
+                mRef.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int cnt = 0;
+                        for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                            CustomerUser customerUser = postSnapshot.getValue(CustomerUser.class);
+                            if (customerUser.id.equals(Global.gUser.id)) {
+                                break;
+                            }
+                            cnt++;
+                        }
+
+                        if (cnt > 0) {
+                            String showTime = "";
+                            int waiting = cnt * Integer.parseInt(barber.pertime);
+
+                            int hour = waiting / 60;
+                            int min = waiting % 60 / 10;
+                            if (hour == 0) {
+                                showTime = String.format("%dmin", min * 10);
+                            } else if (min == 0) {
+                                showTime = String.format("%dhr", hour);
+                            } else {
+                                showTime = String.format("%dh %dm", hour, min * 10);
+                            }
+
+                            time.setText(showTime);
+                        } else {
+                            time.setText(mContext.getResources().getString(R.string.item_cutting));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        //
+                    }
+                });
+            }
         }
 
         return convertView;

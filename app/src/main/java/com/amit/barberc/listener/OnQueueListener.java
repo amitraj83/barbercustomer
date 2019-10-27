@@ -3,5 +3,6 @@ package com.amit.barberc.listener;
 import com.amit.barberc.model.BarberUser;
 
 public interface OnQueueListener {
-    void OnQueueClickListener(BarberUser barber);
+    void OnClickQueue(BarberUser barber);
+    void OnClickBarber(BarberUser barber);
 }

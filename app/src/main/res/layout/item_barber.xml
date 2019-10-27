@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,35 +15,26 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_margin="10dp"
             android:id="@+id/img_item_avatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/logo"/>
 
         <LinearLayout
-            android:layout_margin="15dp"
+            android:layout_marginLeft="5dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-
                 android:id="@+id/lbl_item_name"
                 style="@style/txt.black.14.medium"
                 android:text="Your Barber" />
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/lbl_item_during"
-                    style="@style/txt.gray.12.medium"
-                    android:text="Time : 08:00 ~ 18:00" />
-            </LinearLayout>
-
-            <LinearLayout
+                android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -53,19 +44,19 @@
                     android:src="@drawable/ic_waiting"/>
 
                 <TextView
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="4dp"
                     android:id="@+id/lbl_item_time"
                     style="@style/txt.gray.12.medium"
                     android:text="2 hr" />
 
                 <ImageView
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_address"/>
 
                 <TextView
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="4dp"
                     android:id="@+id/lbl_item_distence"
                     style="@style/txt.gray.12.medium"
                     android:text="2.3 Km" />

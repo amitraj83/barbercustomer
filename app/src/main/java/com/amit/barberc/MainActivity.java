@@ -22,12 +22,19 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 public class MainActivity extends AppCompatActivity {
 
+    static public MainActivity mActivity;
+    static public BarberDetailFragment detailFragment;
+    static public BarberListFragment listFragment;
+
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         Global.initUIActivity(this);
+        mActivity = this;
 
         initUIView();
     }
@@ -37,11 +44,15 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new BarberListFragment(), "List of Barbers");
         adapter.addFragment(new BarberDetailFragment(), "Details of Barbers");
 
-        ViewPager viewPager = findViewById(R.id.vwp_main_content);
+        viewPager = findViewById(R.id.vwp_main_content);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                if (position == 1) {
+                    detailFragment.initUIView();
+                } else {
+                    listFragment.initUIView();
+                }
             }
 
             @Override
@@ -58,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         SmartTabLayout viewPagerTab = findViewById(R.id.tab_main_title);
         viewPagerTab.setViewPager(viewPager);
+    }
+
+    public void onViewPagerSetted(int num) {
+        viewPager.setCurrentItem(num);
     }
 
     @Override

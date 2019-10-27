@@ -13,7 +13,9 @@
     <color name="custom_DarkBlue">#4a98f7</color>
     <color name="custom_Black">#424343</color>
     <color name="custom_Gray">#adacac</color>
+    <color name="custom_Orange">#f8a437</color>
     <color name="custom_White">#ffffff</color>
+    <color name="custom_WhiteBlack">#f0f0f0</color>
     <color name="custom_WhiteAlpha">#c0ffffff</color>
 
 </resources>

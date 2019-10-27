@@ -5,7 +5,6 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
 import com.amit.barberc.util.Global;
 

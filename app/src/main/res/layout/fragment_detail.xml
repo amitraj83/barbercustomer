@@ -11,6 +11,7 @@
         android:layout_height="175dp" >
 
         <ImageView
+            android:id="@+id/img_detail_logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/img_barber"
@@ -23,87 +24,126 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/img_detail_avatar"
                 android:layout_marginTop="15dp"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:src="@drawable/logo"/>
 
             <TextView
+                android:id="@+id/lbl_detail_name"
                 android:layout_marginTop="20dp"
                 style="@style/txt.black.16.medium"
                 android:text="John Smith"
                 android:textColor="@color/custom_White"/>
 
             <TextView
-                style="@style/txt.black.16.medium"
+                android:id="@+id/lbl_detail_address"
+                style="@style/txt.black.14.light"
                 android:text="Address : Street Name"
                 android:textColor="@color/custom_White"/>
         </LinearLayout>
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_marginTop="25dp"
-            style="@style/txt.black.12.light"
-            android:text="You are 5th in the queue and you waiting time is:"/>
-
-        <LinearLayout
-            android:layout_marginTop="15dp"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/btn_back_time">
-
-            <TextView
-                style="@style/txt.black.14.bold"
-                android:textColor="@color/custom_DarkBlue"
-                android:text="1 h"/>
-
-            <TextView
-                style="@style/txt.black.14.bold"
-                android:textColor="@color/custom_DarkBlue"
-                android:text="10 m"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/btn_detail_join"
-                android:layout_width="120dp"
-                android:layout_height="30dp"
-                style="@style/txt.black.14.medium"
-                android:textAllCaps="false"
-                android:textColor="@color/custom_White"
-                android:text="Join Queue"
-                android:background="@drawable/btn_back_join"/>
-
-            <Button
-                android:id="@+id/btn_detail_leave"
-                android:layout_marginLeft="40dp"
-                android:layout_width="120dp"
-                android:layout_height="30dp"
-                style="@style/txt.black.14.medium"
-                android:textAllCaps="false"
-                android:textColor="@color/custom_White"
-                android:text="Leave Queue"
-                android:background="@drawable/btn_back_leave"/>
-        </LinearLayout>
+        android:layout_height="match_parent">
 
         <ImageView
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="50dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:alpha="0.3"
             android:src="@drawable/img_detail_back"/>
-    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/lbl_detail_waiting"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="25dp"
+                android:textAlignment="center"
+                style="@style/txt.black.12.light"
+                android:text="You are 5th in the queue and you waiting time is:"/>
+
+            <LinearLayout
+                android:id="@+id/llt_detail_time"
+                android:layout_marginTop="15dp"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@drawable/btn_back_time">
+
+                <TextView
+                    android:id="@+id/lbl_detail_hour"
+                    style="@style/txt.black.14.bold"
+                    android:textColor="@color/custom_DarkBlue"
+                    android:text="1 h"/>
+
+                <TextView
+                    android:id="@+id/lbl_detail_min"
+                    style="@style/txt.black.12.medium"
+                    android:textColor="@color/custom_DarkBlue"
+                    android:text="10 m"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llt_detail_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lbl_detail_phone"
+                    android:layout_marginTop="20dp"
+                    android:textAlignment="center"
+                    style="@style/txt.black.12.light"
+                    android:text="Phone Number : 2096227257"/>
+
+                <TextView
+                    android:id="@+id/lbl_detail_pertime"
+                    android:layout_marginTop="10dp"
+                    android:textAlignment="center"
+                    style="@style/txt.black.12.light"
+                    android:text="Per Time : 15 min"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btn_detail_join"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    style="@style/txt.black.14.medium"
+                    android:textAllCaps="false"
+                    android:textColor="@color/custom_White"
+                    android:text="Join Queue"
+                    android:background="@drawable/btn_back_join"/>
+
+                <Button
+                    android:id="@+id/btn_detail_leave"
+                    android:layout_marginLeft="50dp"
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    style="@style/txt.black.14.medium"
+                    android:textAllCaps="false"
+                    android:textColor="@color/custom_White"
+                    android:text="Leave Queue"
+                    android:background="@drawable/btn_back_leave"/>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
