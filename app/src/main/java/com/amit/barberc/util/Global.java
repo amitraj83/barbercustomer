@@ -2,8 +2,6 @@ package com.amit.barberc.util;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
