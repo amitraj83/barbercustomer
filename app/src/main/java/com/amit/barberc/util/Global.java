@@ -23,14 +23,8 @@ import java.util.List;
 public class Global {
     static final public String AppTag = "com.amit.barberc";
 
-    static final public String KeyIsQueue = "isqueue";
-    static final public String KeyQueueDate = "queuedate";
-    static final public String KeyQueueID = "queueid";
-
     static public CustomerUser gUser = new CustomerUser();
     static public BarberUser gBarber = new BarberUser();
-    static public List<BarberUser> gBarberUsers = new ArrayList<>();
-    static public List<DistanceModel> gBarberDistences = new ArrayList<>();
 
     static public boolean gIsQueue = false;
     static public double gLat, gLan;

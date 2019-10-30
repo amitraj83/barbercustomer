@@ -24,6 +24,8 @@ import androidx.core.content.ContextCompat;
 
 import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
+import com.amit.barberc.model.BarberUser;
+import com.amit.barberc.model.CustomerUser;
 import com.amit.barberc.util.Global;
 
 import com.daimajia.androidanimations.library.Techniques;
@@ -45,8 +47,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
 
 import java.util.Timer;
@@ -69,37 +74,6 @@ public class LoginActivity extends AppCompatActivity {
     private int count = 0;
     private boolean isVerify = true;
     private boolean isLocation = false;
-
-    private LocationManager mLocationManager;
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            //your code here
-            if (isLocation) {
-                return;
-            }
-            isLocation = true;
-//            Global.gLat = location.getLatitude() - 20;
-//            Global.gLot = -location.getLongitude() - 20;
-            Global.gLat = 102.634751;
-            Global.gLan = 17.956487;
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            //
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            //
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            //
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,14 +124,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("MissingPermission")
     private void initUIView() {
-        isLocation = false;
-
-        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0
-                , 0, mLocationListener);
-
         txt_name = findViewById(R.id.txt_login_name);
         txt_phone = findViewById(R.id.txt_login_phone);
         txt_code = findViewById(R.id.txt_login_code);
@@ -264,54 +231,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onClickBtnLogin(View view) {
 //        if (true) {
-//            Global.gUser.id = "SpGo6vRCLAdqir7aQoQIVbc6uFc2";
-//            Global.gUser.name = "Noma";
-//            Global.gUser.phone = "2055592450";
-//
-//            FirebaseDatabase database = FirebaseDatabase.getInstance();
-//            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
-//            mRef.setValue(Global.gUser);
-//
-//            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
-//            return;
-//        }
-
-        if (true) {
-            Global.gUser.id = "xarLSUpYEUUVavCXYHUwZdnK2Am1";
-            Global.gUser.name = "Black Gold";
-            Global.gUser.phone = "2096227257";
-
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
-            mRef.setValue(Global.gUser);
-
-            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
-            return;
-        }
-
-//        if (true) {
-//            Global.gUser.id = "SdpU64FW3hSbJvSnjV7Ra0Vstyu1";
-//            Global.gUser.name = "Sayavong";
-//            Global.gUser.phone = "2091659709";
-//
-//            FirebaseDatabase database = FirebaseDatabase.getInstance();
-//            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
-//            mRef.setValue(Global.gUser);
-//
-//            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
-//            return;
-//        }
-
-//        if (true) {
-//            Global.gUser.id = "vrFfGuysKUOh6ASm4yMALXbyjap2";
-//            Global.gUser.name = "Berk";
-//            Global.gUser.phone = "2058076889";
-//
-//            FirebaseDatabase database = FirebaseDatabase.getInstance();
-//            DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
-//            mRef.setValue(Global.gUser);
-//
-//            Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+//            Global.gUser.id = "xarLSUpYEUUVavCXYHUwZdnK2Am1";
+//            onGetUserInfo(Global.gUser.id);
 //            return;
 //        }
 
@@ -337,16 +258,8 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser currentUser = mAuth.getCurrentUser();
-
                         Global.gUser.id = currentUser.getUid();
-                        Global.gUser.name = txt_name.getText().toString();
-                        Global.gUser.phone = txt_phone.getText().toString();
-
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference mRef = database.getReference("Customers").child(Global.gUser.id);
-                        mRef.setValue(Global.gUser);
-
-                        Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+                        onGetUserInfo(Global.gUser.id);
                     } else {
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_faild_verify), Toast.LENGTH_SHORT).show();
@@ -354,6 +267,22 @@ public class LoginActivity extends AppCompatActivity {
                     }
                     progressbar.gone();
                 });
+    }
+
+    private void onGetUserInfo(String id) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference mBarberRef = database.getReference().child("Customers").child(id);
+        mBarberRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Global.gUser = dataSnapshot.getValue(CustomerUser.class);
+                Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) { }
+        });
+
     }
 
     @Override
@@ -374,14 +303,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelClicked(String tag) {
-                    //
-                }
+                public void onCancelClicked(String tag) { }
 
                 @Override
-                public void onExitClicked(String tag) {
-
-                }
+                public void onExitClicked(String tag) { }
             });
             BblDialog sampleDialog = new BblDialog();
             sampleDialog.setContentFragment(fragment

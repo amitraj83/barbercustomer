@@ -19,7 +19,7 @@
             android:id="@+id/img_item_avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/logo"/>
+            android:src="@drawable/icon"/>
 
         <LinearLayout
             android:layout_marginLeft="5dp"

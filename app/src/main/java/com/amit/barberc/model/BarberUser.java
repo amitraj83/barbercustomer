@@ -18,18 +18,6 @@ public class BarberUser {
     public String logoImgUrl = "";
     public String langitude = "";
     public String latitude = "";
-    public int customers = 0;
-
-    public void onSetQueueWithCustomer() {
-        customers = customers + 1;
-    }
-
-    public void onUnsetQueueWithCustomer() {
-        customers = customers - 1;
-        if (customers < 0) {
-            customers = 0;
-        }
-    }
 
     @Keep
     static public class WorkTime {

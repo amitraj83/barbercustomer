@@ -8,8 +8,8 @@
     tools:context=".activity.SplashActivity">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
         android:text="Hello World!"
         android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
