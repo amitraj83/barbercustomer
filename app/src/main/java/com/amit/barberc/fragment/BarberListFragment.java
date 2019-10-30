@@ -1,6 +1,5 @@
 package com.amit.barberc.fragment;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,12 +14,8 @@ import androidx.fragment.app.Fragment;
 import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
 import com.amit.barberc.adapter.BarberListAdadper;
-import com.amit.barberc.listener.OnFireBaseListener;
-import com.amit.barberc.listener.OnLocationListener;
 import com.amit.barberc.listener.OnQueueListener;
 import com.amit.barberc.model.BarberUser;
-import com.amit.barberc.model.CustomerUser;
-import com.amit.barberc.model.DistanceModel;
 import com.amit.barberc.util.Global;
 import com.dkv.bubblealertlib.AppConstants;
 import com.dkv.bubblealertlib.AppLog;
@@ -28,19 +23,10 @@ import com.dkv.bubblealertlib.BblContentFragment;
 import com.dkv.bubblealertlib.BblDialog;
 import com.dkv.bubblealertlib.ConstantsIcons;
 import com.dkv.bubblealertlib.IAlertClickedCallBack;
-import com.fevziomurtekin.customprogress.Dialog;
-import com.fevziomurtekin.customprogress.Type;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class BarberListFragment extends Fragment implements OnQueueListener {
     static public BarberListFragment listFragment;
