@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
             BblContentFragment fragment = BblContentFragment.newInstance(AppConstants.TAG_FEEDBACK_SUCCESS);
             String content = "Do you really close this application?";
             if (TextUtils.isEmpty(content)) {
-                content = getString(com.dkv.bubblealertlib.R.string.err_server_error);
+                content = getString(R.string.err_server_error);
             }
             fragment.setContent(content, "Yes", "No", null, "Exit");
             fragment.setClickedCallBack(new IAlertClickedCallBack() {
@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
             });
             BblDialog sampleDialog = new BblDialog();
             sampleDialog.setContentFragment(fragment
-                    , com.dkv.bubblealertlib.R.layout.layout_bbl_content
+                    , R.layout.layout_bbl_content
                     , LayoutInflater.from(this), content
                     , ConstantsIcons.ALERT_ICON_INFO, this);
             sampleDialog.setDisMissCallBack(null);

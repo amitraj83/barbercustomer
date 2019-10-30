@@ -68,7 +68,7 @@ public class BarberListFragment extends Fragment implements OnQueueListener {
             BblContentFragment fragment = BblContentFragment.newInstance(AppConstants.TAG_FEEDBACK_SUCCESS);
             String content = "Are you sure to queue this barber?";
             if (TextUtils.isEmpty(content)) {
-                content = getString(com.dkv.bubblealertlib.R.string.err_server_error);
+                content = getString(R.string.err_server_error);
             }
             fragment.setContent(content, "Yes", "No", null, "Queue");
             fragment.setClickedCallBack(new IAlertClickedCallBack() {
@@ -94,7 +94,7 @@ public class BarberListFragment extends Fragment implements OnQueueListener {
             });
             BblDialog sampleDialog = new BblDialog();
             sampleDialog.setContentFragment(fragment
-                    , com.dkv.bubblealertlib.R.layout.layout_bbl_content
+                    , R.layout.layout_bbl_content
                     , LayoutInflater.from(getContext()), content
                     , ConstantsIcons.ALERT_ICON_INFO, getContext());
             sampleDialog.setDisMissCallBack(null);

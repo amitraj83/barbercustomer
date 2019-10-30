@@ -47,6 +47,8 @@ public class BarberDetailFragment extends Fragment {
     private TextView lbl_name, lbl_address, lbl_waiting, lbl_hour, lbl_min, lbl_phone, lbl_pertime;
     private LinearLayout llt_time, llt_more;
 
+    private boolean isLeave = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -65,7 +67,7 @@ public class BarberDetailFragment extends Fragment {
                 BblContentFragment fragment = BblContentFragment.newInstance(AppConstants.TAG_FEEDBACK_SUCCESS);
                 String content = "Do you want to join the queue now?";
                 if (TextUtils.isEmpty(content)) {
-                    content = getString(com.dkv.bubblealertlib.R.string.err_server_error);
+                    content = getString(R.string.err_server_error);
                 }
                 fragment.setContent(content, "Join", "Cancel", null, "Join Queue");
                 fragment.setClickedCallBack(new IAlertClickedCallBack() {
@@ -91,7 +93,7 @@ public class BarberDetailFragment extends Fragment {
                 });
                 BblDialog sampleDialog = new BblDialog();
                 sampleDialog.setContentFragment(fragment
-                        , com.dkv.bubblealertlib.R.layout.layout_bbl_content
+                        , R.layout.layout_bbl_content
                         , LayoutInflater.from(getContext()), content
                         , ConstantsIcons.ALERT_ICON_SUCCESS, getContext());
                 sampleDialog.setDisMissCallBack(null);
@@ -107,7 +109,7 @@ public class BarberDetailFragment extends Fragment {
                 BblContentFragment fragment = BblContentFragment.newInstance(AppConstants.TAG_FEEDBACK_SUCCESS);
                 String content = "Do you want to leave now?";
                 if (TextUtils.isEmpty(content)) {
-                    content = getString(com.dkv.bubblealertlib.R.string.err_server_error);
+                    content = getString(R.string.err_server_error);
                 }
                 fragment.setContent(content, "Leave", "Cancel", null, "Leave Queue");
                 fragment.setClickedCallBack(new IAlertClickedCallBack() {
@@ -115,15 +117,20 @@ public class BarberDetailFragment extends Fragment {
                     public void onOkClicked(String tag) {
                         Global.gUser.barberID = "";
                         Global.gUser.status = 0;
+                        isLeave = true;
 
                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                         DatabaseReference mCustomerRef = database.getReference().child("Customers");
                         mCustomerRef.child(Global.gUser.id).setValue(Global.gUser);
 
-                        Query mQueueQuery = database.getReference().child("Queues").orderByChild("id").equalTo(Global.gUser.id);
+                        Query mQueueQuery = database.getReference().child("Queues").child(Global.gBarber.id ).orderByChild("id").equalTo(Global.gUser.id);
                         mQueueQuery.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (!isLeave) {
+                                    return;
+                                }
+                                isLeave = false;
                                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                                     postSnapshot.getRef().removeValue();
                                 }
@@ -142,7 +149,7 @@ public class BarberDetailFragment extends Fragment {
                 });
                 BblDialog sampleDialog = new BblDialog();
                 sampleDialog.setContentFragment(fragment
-                        , com.dkv.bubblealertlib.R.layout.layout_bbl_content
+                        , R.layout.layout_bbl_content
                         , LayoutInflater.from(getContext()), content
                         , ConstantsIcons.ALERT_ICON_SUCCESS, getContext());
                 sampleDialog.setDisMissCallBack(null);

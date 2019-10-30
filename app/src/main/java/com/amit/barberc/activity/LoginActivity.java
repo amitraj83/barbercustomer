@@ -1,12 +1,7 @@
 package com.amit.barberc.activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -24,23 +19,18 @@ import androidx.core.content.ContextCompat;
 
 import com.amit.barberc.MainActivity;
 import com.amit.barberc.R;
-import com.amit.barberc.model.BarberUser;
 import com.amit.barberc.model.CustomerUser;
 import com.amit.barberc.util.Global;
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-
 import com.dkv.bubblealertlib.AppConstants;
 import com.dkv.bubblealertlib.AppLog;
 import com.dkv.bubblealertlib.BblContentFragment;
 import com.dkv.bubblealertlib.BblDialog;
 import com.dkv.bubblealertlib.ConstantsIcons;
 import com.dkv.bubblealertlib.IAlertClickedCallBack;
-
 import com.fevziomurtekin.customprogress.Dialog;
 import com.fevziomurtekin.customprogress.Type;
-
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -73,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private int count = 0;
     private boolean isVerify = true;
-    private boolean isLocation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -232,10 +221,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onClickBtnLogin(View view) {
 //        if (true) {
 //            Global.gUser.id = "xarLSUpYEUUVavCXYHUwZdnK2Am1";
-//            onGetUserInfo(Global.gUser.id);
+//            onGetUserInfo();
 //            return;
 //        }
-
         progressbar.show();
 
         if (isVerify) {
@@ -259,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser currentUser = mAuth.getCurrentUser();
                         Global.gUser.id = currentUser.getUid();
-                        onGetUserInfo(Global.gUser.id);
+                        onGetUserInfo();
                     } else {
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             Toast.makeText(LoginActivity.this, getResources().getString(R.string.login_faild_verify), Toast.LENGTH_SHORT).show();
@@ -269,14 +257,30 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void onGetUserInfo(String id) {
+    private void onGetUserInfo() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mBarberRef = database.getReference().child("Customers").child(id);
-        mBarberRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference mCustomRef = database.getReference().child("Customers");
+        mCustomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Global.gUser = dataSnapshot.getValue(CustomerUser.class);
+                boolean flag = false;
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    CustomerUser user = postSnapshot.getValue(CustomerUser.class);
+                    if (user.id.equals(Global.gUser.id)) {
+                        flag = true;
+                        Global.gUser = user;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    Global.gUser.name = txt_name.getText().toString();
+                    Global.gUser.phone = ccp.getSelectedCountryCodeWithPlus() + txt_phone.getText().toString();
+                    Global.gUser.status = 0;
+                    Global.gUser.barberID = "";
+                    mCustomRef.child(Global.gUser.id).setValue(Global.gUser);
+                }
                 Global.showOtherActivity(LoginActivity.this, MainActivity.class, -1);
+                FirebaseAuth.getInstance().signOut();
             }
 
             @Override
@@ -291,7 +295,7 @@ public class LoginActivity extends AppCompatActivity {
             BblContentFragment fragment = BblContentFragment.newInstance(AppConstants.TAG_FEEDBACK_SUCCESS);
             String content = "Do you really close this application?";
             if (TextUtils.isEmpty(content)) {
-                content = getString(com.dkv.bubblealertlib.R.string.err_server_error);
+                content = getString(R.string.err_server_error);
             }
             fragment.setContent(content, "Yes", "No", null, "Exit");
             fragment.setClickedCallBack(new IAlertClickedCallBack() {
@@ -310,7 +314,7 @@ public class LoginActivity extends AppCompatActivity {
             });
             BblDialog sampleDialog = new BblDialog();
             sampleDialog.setContentFragment(fragment
-                    , com.dkv.bubblealertlib.R.layout.layout_bbl_content
+                    , R.layout.layout_bbl_content
                     , LayoutInflater.from(this), content
                     , ConstantsIcons.ALERT_ICON_INFO, this);
             sampleDialog.setDisMissCallBack(null);
