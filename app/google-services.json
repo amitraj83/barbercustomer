@@ -1,29 +1,21 @@
 {
   "project_info": {
-    "project_number": "959071555094",
-    "firebase_url": "https://freelancer-6f6fb.firebaseio.com",
-    "project_id": "freelancer-6f6fb",
-    "storage_bucket": "freelancer-6f6fb.appspot.com"
+    "project_number": "525753709953",
+    "firebase_url": "https://barbershop-ea4fd.firebaseio.com",
+    "project_id": "barbershop-ea4fd",
+    "storage_bucket": "barbershop-ea4fd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:959071555094:android:40d5f6d2e88a74bc74af37",
+        "mobilesdk_app_id": "1:525753709953:android:f2224825a64d3ad6f46480",
         "android_client_info": {
           "package_name": "com.amit.barberc"
         }
       },
       "oauth_client": [
         {
-          "client_id": "959071555094-vlu4qro0misqe8lig3mqiuiifsego9nq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.amit.barberc",
-            "certificate_hash": "7ea985cb649c2e3f8f8682fe6811db9d2edd51b9"
-          }
-        },
-        {
-          "client_id": "959071555094-c2g8cqjd9uimsvacl5l9qt0bm5890toc.apps.googleusercontent.com",
+          "client_id": "525753709953-8mj49jp01iu1tue589qplrs8dv97b2gr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.amit.barberc",
@@ -31,28 +23,20 @@
           }
         },
         {
-          "client_id": "959071555094-va90chrto560mr295bsor4m1l0scevfg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.amit.barberc",
-            "certificate_hash": "57e259410ce5a2fbe4a6d4d5174d68ded5d5074b"
-          }
-        },
-        {
-          "client_id": "959071555094-f9a79r4i9qp75n2ksjakbkp7oka2p6q8.apps.googleusercontent.com",
+          "client_id": "525753709953-udhubhjovovtuor382m80hbjupgst1uv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBIeU19sDveXmbkxWWyL6tjTDl60MTgZTg"
+          "current_key": "AIzaSyBS40nD1m2EBBFfFo8mDQnV-yB5UUEpP7A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "959071555094-f9a79r4i9qp75n2ksjakbkp7oka2p6q8.apps.googleusercontent.com",
+              "client_id": "525753709953-udhubhjovovtuor382m80hbjupgst1uv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
@@ -61,35 +45,35 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:959071555094:android:6af2b9644b5d31c574af37",
+        "mobilesdk_app_id": "1:525753709953:android:04e84e34aa15ade4f46480",
         "android_client_info": {
           "package_name": "com.amit.barberq"
         }
       },
       "oauth_client": [
         {
-          "client_id": "959071555094-j18t8d88uelts11u8c573kdoj3qu0qrn.apps.googleusercontent.com",
+          "client_id": "525753709953-5suttqdcodjea7jeuvhr6vmfuv6fftqt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.amit.barberq",
-            "certificate_hash": "f62e73f5b35ca7b78f8097a8a022e36040cd5aba"
+            "certificate_hash": "9c09ecc00148f6cfde3ad8726416c3904249742a"
           }
         },
         {
-          "client_id": "959071555094-f9a79r4i9qp75n2ksjakbkp7oka2p6q8.apps.googleusercontent.com",
+          "client_id": "525753709953-udhubhjovovtuor382m80hbjupgst1uv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBIeU19sDveXmbkxWWyL6tjTDl60MTgZTg"
+          "current_key": "AIzaSyBS40nD1m2EBBFfFo8mDQnV-yB5UUEpP7A"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "959071555094-f9a79r4i9qp75n2ksjakbkp7oka2p6q8.apps.googleusercontent.com",
+              "client_id": "525753709953-udhubhjovovtuor382m80hbjupgst1uv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
